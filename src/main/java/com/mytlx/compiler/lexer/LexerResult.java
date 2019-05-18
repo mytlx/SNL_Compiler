@@ -1,5 +1,7 @@
 package com.mytlx.compiler.lexer;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: TLX
@@ -7,4 +9,22 @@ package com.mytlx.compiler.lexer;
  * Time: 9:26
  */
 public class LexerResult {
+    private List<Token> tokenList;
+    private List<String> errors;
+
+    public List<Token> getTokenList() {
+        return tokenList;
+    }
+
+    public void setTokenList(List<Token> tokenList) {
+        this.tokenList = tokenList;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
+    }
 }

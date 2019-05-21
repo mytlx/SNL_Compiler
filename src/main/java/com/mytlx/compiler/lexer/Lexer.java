@@ -407,6 +407,11 @@ public class Lexer {
         return ((char) ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
     }
 
+    /**
+     * 单元测试，词法分析
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         InputStream in = Lexer.class.getClassLoader().getResourceAsStream("p.snl");
         Lexer lexer = new Lexer();

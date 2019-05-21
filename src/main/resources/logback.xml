@@ -28,8 +28,8 @@
     </appender>
 
     <!-- 日志输出级别 -->
-    <root level="OFF">
+    <root level="TRACE">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="FILE"/>-->
     </root>
 </configuration>

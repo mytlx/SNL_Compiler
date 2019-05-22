@@ -25,7 +25,8 @@ public enum NON_TERMINAL {
         @Override
         public List<Symbol> predict(Token token) {
             if (token.getType() == PROGRAM) {
-                return asList(nonFactory("ProgramHead"), nonFactory("DeclarePart"), nonFactory("ProgramBody"));
+                return asList(nonFactory("ProgramHead"), nonFactory("DeclarePart"),
+                        nonFactory("ProgramBody"), terFactory(EOF));
             }
             return null;
         }
@@ -288,7 +289,7 @@ public enum NON_TERMINAL {
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
             if (type == INTEGER || type == CHAR || type == ARRAY || type == RECORD || type == ID) {
-                return asList(nonFactory("TypeDef"), nonFactory("VarIdList"), nonFactory("VarDecMore"));
+                return asList(nonFactory("TypeDef"), nonFactory("VarIdList"),terFactory(SEMI), nonFactory("VarDecMore"));
             }
             return null;
         }
@@ -746,7 +747,7 @@ public enum NON_TERMINAL {
                 case LPAREN:
                 case INTC:
                 case ID:
-                    return asList(nonFactory("Term"), nonFactory("otherTerm"));
+                    return asList(nonFactory("Term"), nonFactory("OtherTerm"));
             }
             return null;
         }
@@ -787,7 +788,7 @@ public enum NON_TERMINAL {
                 case LPAREN:
                 case INTC:
                 case ID:
-                    return asList(nonFactory("Factor"), nonFactory("otherFactor"));
+                    return asList(nonFactory("Factor"), nonFactory("OtherFactor"));
             }
             return null;
         }

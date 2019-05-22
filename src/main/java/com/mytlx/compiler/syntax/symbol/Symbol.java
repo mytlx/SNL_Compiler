@@ -9,7 +9,7 @@ import com.mytlx.compiler.syntax.tree.TreeNode;
  * @date 2019.5.20
  * @time 21:40
  */
-public abstract class Symbol {
+public abstract class Symbol extends Util {
 
     public abstract TreeNode getNode();
 

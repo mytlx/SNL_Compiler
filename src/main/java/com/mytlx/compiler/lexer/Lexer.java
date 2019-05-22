@@ -167,9 +167,10 @@ public class Lexer {
                         sb.deleteCharAt(sb.length() - 1);       // 删除符号'\''
                         stateEnum = StateEnum.INCHAR;
                     } else {
-                        LOG.info("当前字符不在分析范围之内：{}({})", (char) ch, ch);
+                        LOG.info("当前字符不在分析范围之内：{}({})[{}:{}]", showChar(ch), ch, line, column);
                         stateEnum = StateEnum.ERROR;
                     }
+                    // TODO: 多个注释结束符的情况{ commment }}}}}}}
                     break;
                 //</editor-fold>
                 //<editor-fold desc="case INID 识别标识符">
@@ -180,7 +181,8 @@ public class Lexer {
                     } else {
                         // 当前字符已经不是标识符范围的了，标识符已经结束了
                         // 回溯一个字符
-                        LOG.trace("当前字符已经不是标识符范围的了：{}({})", (char) ch, ch);
+                        LOG.trace("当前字符已经不是标识符范围的了：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
+                        LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
                         backTrackChar(sb.charAt(sb.length() - 1));
                         token = new Token(line, column, TokenType.ID, sb.substring(0, sb.length() - 1));
                         // TODO: 判断是否为保留字
@@ -196,7 +198,8 @@ public class Lexer {
                     // 如果是数字会自动保持数字状态
                     // 不是数字表示，数字识别已完成
                     if (!isDigit(ch)) {
-                        backTrackChar(sb.charAt(sb.length() - 1));
+                        LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
+                        backTrackChar(sb.charAt(sb.length() - 1));  // ch
                         token = new Token(line, column, TokenType.INTC, sb.substring(0, sb.length() - 1));
                         LOG.debug("已识别Token：" + token);
                         return token;
@@ -238,6 +241,8 @@ public class Lexer {
                 case INDOT:
                     LOG.trace("进入DOT状态");
                     if (isAlpha(ch)) {          // record域中的点运算符
+                        LOG.trace("record域中的点运算符");
+                        LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
                         backTrackChar(ch);      // 回溯多读的字符
                         sb.deleteCharAt(sb.length() - 1);
                         token = new Token(line, column, TokenType.DOT, sb.toString());
@@ -255,8 +260,9 @@ public class Lexer {
                         return token;
                     }
                     // 错误，回溯
-                    backTrackChar(ch);
                     LOG.info("错误的点运算符");
+                    LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
+                    backTrackChar(ch);
                     stateEnum = StateEnum.ERROR;
                     break;
                 //</editor-fold>
@@ -266,6 +272,7 @@ public class Lexer {
                     // 如果是数组下标界限符，那么后面一定是数字
                     if (isDigit(ch)) {
                         // 回溯
+                        LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
                         backTrackChar(ch);
                         sb.deleteCharAt(sb.length() - 1);
                         token = new Token(line, column, TokenType.UNDERRANGE, sb.toString());
@@ -342,9 +349,13 @@ public class Lexer {
     private int getChar() throws IOException {
         int ch;
         // 先判断getMeFirst中是否存储了回溯的字符
-        if (getMeFirst != -1 && getMeFirst != ' ' && getMeFirst != '\n' && getMeFirst != '\r') {
+        if (getMeFirst != -1 && getMeFirst != ' ' && getMeFirst != '\r') {
             ch = getMeFirst;
             getMeFirst = -1;
+        } else if(getMeFirst == ' ' || getMeFirst == '\r') {
+            column++;
+            getMeFirst = -1;
+            ch = reader.read();
         } else {
             ch = reader.read();
         }
@@ -356,10 +367,7 @@ public class Lexer {
             column++;
         }
 
-        if (ch == '\r') {
-            column--;
-        }
-        LOG.trace("当前字符是{}({})[{}:{}]", showChar(ch), ch, line, column);
+        LOG.trace("当前字符是：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
         return ch;
     }
 

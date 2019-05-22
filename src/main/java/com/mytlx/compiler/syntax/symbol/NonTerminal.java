@@ -18,7 +18,7 @@ public class NonTerminal extends Symbol {
 
     @Override
     public TreeNode getNode() {
-        return null;
+        return node;
     }
 
     public String getValue() {
@@ -29,5 +29,8 @@ public class NonTerminal extends Symbol {
         return new NonTerminal(s);
     }
 
+    public boolean isBlank() {
+        return value.equals("blank");
+    }
 
 }

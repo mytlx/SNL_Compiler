@@ -61,12 +61,11 @@ public class LL1Parse extends LexParse {
                 if (symbols != null) {
                     // 右端生成式为symbol的children
                     int size = symbols.size();
-                    List<TreeNode> children = new ArrayList<>();
-                    for (Symbol symbol1 : symbols) {
-                        children.add(symbol1.getNode());
+                    for (int i = 0; i < size - 1; i++) {
+                        symbols.get(i).getNode().setSiblings(symbols.get(i + 1).getNode());
                     }
-                    symbol.getNode().setChildren(children);
-                    LOG.trace("构建" + ((NonTerminal) symbol).getValue() + "的子树：" + children);
+                    symbol.getNode().setChildren(symbols.get(0).getNode());
+                    LOG.trace("构建" + ((NonTerminal) symbol).getValue() + "的子树：" + symbol.getNode().getChildren());
                     // 右端生成式逆序入栈
                     for (int i = size - 1; i >= 0; i--) {
                         Symbol item = symbols.get(i);
@@ -95,6 +94,6 @@ public class LL1Parse extends LexParse {
         LL1Parse parse = new LL1Parse();
         parse.lexParse();
         SyntaxTree result = parse.syntaxParse();
-        // result.traversal();
+        result.preOrderRecursive();
     }
 }

@@ -1,10 +1,11 @@
 package com.mytlx.compiler.lexer;
 
 /**
- * Created by IntelliJ IDEA.
- * User: TLX
- * Date: 2019/5/15
- * Time: 14:57
+ * 词法单元
+ *
+ * @author TLX
+ * @date 2019/5/15
+ * @time 14:57
  */
 public enum TokenType {
     ERROR("error"),

@@ -1,8 +1,6 @@
 package com.mytlx.compiler.syntax.tree;
 
-import com.mytlx.compiler.syntax.symbol.Util;
-
-import java.util.List;
+import com.mytlx.compiler.utils.ToStringUtils;
 
 /**
  * 树结点
@@ -11,7 +9,7 @@ import java.util.List;
  * @date 2019.5.20
  * @time 21:38
  */
-public class TreeNode extends Util {
+public class TreeNode extends ToStringUtils {
     private TreeNode siblings;
     private TreeNode children;
     private String value;

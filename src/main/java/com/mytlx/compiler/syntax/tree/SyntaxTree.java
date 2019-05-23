@@ -1,11 +1,11 @@
 package com.mytlx.compiler.syntax.tree;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.Stack;
 
 /**
+ * 语法树结构
+ *
  * @author TLX
  * @date 2019.5.21
  * @time 20:32
@@ -29,88 +29,20 @@ public class SyntaxTree {
         this.out = out;
     }
 
-    // public void traversal() {
-    //     if (root == null) return;
-    //     int cnt = 1;
-    //     int cntChild = 0;
-    //     int cntCurr = 1;
-    //     int cntNull = 0;
-    //     Queue<TreeNode> queue = new LinkedList<>();
-    //     TreeNode pNode = root;
-    //     queue.add(root);
-    //     TreeNode[] curr = {root};
-    //     while (cntCurr != 0 && cnt != 0) {
-    //         pNode = curr[curr.length - cntCurr];
-    //         if (pNode.hasChild()) {
-    //             Collections.addAll(queue, pNode.getChildren());
-    //             cntChild += pNode.getChildren().length;
-    //         } else {
-    //             // TODO:
-    //             cntChild++;     // null的位置
-    //         }
-    //         System.out.print(pNode + " ");
-    //         if (--cntCurr == 0) {
-    //             System.out.print("| ");
-    //             TreeNode temp;
-    //             while (true) {
-    //                 if ((temp = queue.poll()) != null)
-    //                     curr = temp.getChildren();
-    //                 else return;
-    //                 if (curr != null) {
-    //                     cntCurr = curr.length;
-    //                     break;
-    //                 } else {
-    //                     if ((cnt - 1) == 0)
-    //                         cntNull++;
-    //                     else System.out.print("null | ");
-    //                 }
-    //             }
-    //         }
-    //         if (--cnt == 0) {
-    //             System.out.println("\n=================");
-    //             for (int i = 0; i < cntNull; i++) {
-    //                 System.out.print("null | ");
-    //             }
-    //             cnt = cntChild;
-    //             cntChild = 0;
-    //         }
-    //         // pNode = curr[curr.length - cntCurr];
-    //
-    //     }
-    // }
-
-    public void preOrder() throws FileNotFoundException {
-        if (root == null) return;
-        Stack<TreeNode> stack = new Stack<>();
-        // PrintStream out = new PrintStream(new File("./tree.txt"));
-        stack.push(root);
-        TreeNode temp;
-        while (!stack.isEmpty()) {
-            temp = stack.pop();
-            if (temp.hasChild()) {
-                TreeNode child = temp.getChildren();
-                if (child.hasSiblings()) {
-                    TreeNode siblings = child.getSiblings();
-                    for (int i = child.siblingsSize() - 1; i >= 0; i--) {
-                        for (int j = 0; j < i; j++) {
-                            siblings = siblings.getSiblings();
-                        }
-                        stack.push(siblings);
-                        siblings = child.getSiblings();
-                    }
-                }
-                stack.push(child);
-            }
-            System.out.println("|");
-            System.out.println("|_" + temp.getValue() + " ");
-        }
-    }
 
     public void preOrderRecursive() throws FileNotFoundException {
-        PrintStream out = new PrintStream(new File("./tree.txt"));
         preOrderRecursiveCore(root, 0, 0, new int[100]);
     }
 
+    /**
+     * 递归打印树结构，竖版，类似于tree命令
+     *
+     * @param node  当前结点
+     * @param level 当前结点的层级，root=0
+     * @param cnt   当前结点前面应该打印的"|"次数，貌似最后没用到
+     * @param b     当前结点前面打印“|”的依据，0 -> 不打印，1 -> 打印
+     * @throws FileNotFoundException
+     */
     public void preOrderRecursiveCore(TreeNode node, int level, int cnt, int[] b) throws FileNotFoundException {
         if (node == null) return;
         // int temp = cnt;
@@ -149,7 +81,12 @@ public class SyntaxTree {
         }
     }
 
-
+    /**
+     * 单元测试
+     *
+     * @param args
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
 
         TreeNode t1 = new TreeNode("root");

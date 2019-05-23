@@ -3,10 +3,11 @@ package com.mytlx.compiler.lexer;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: TLX
- * Date: 2019.5.16
- * Time: 9:26
+ * 词法分析的结果
+ *
+ * @author TLX
+ * @date 2019.5.16
+ * @time 9:26
  */
 public class LexerResult {
     private List<Token> tokenList;

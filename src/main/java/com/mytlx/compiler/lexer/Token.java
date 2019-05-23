@@ -1,10 +1,11 @@
 package com.mytlx.compiler.lexer;
 
 /**
- * Created by IntelliJ IDEA.
- * User: TLX
- * Date: 2019/5/15
- * Time: 15:15
+ * token结构
+ *
+ * @author TLX
+ * @date 2019/5/15
+ * @time 15:15
  */
 public class Token {
     private int line;       //行

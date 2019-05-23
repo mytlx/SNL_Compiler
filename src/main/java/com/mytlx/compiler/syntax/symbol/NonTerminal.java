@@ -3,6 +3,8 @@ package com.mytlx.compiler.syntax.symbol;
 import com.mytlx.compiler.syntax.tree.TreeNode;
 
 /**
+ * 非终结符
+ *
  * @author TLX
  * @date 2019.5.20
  * @time 21:45
@@ -25,6 +27,12 @@ public class NonTerminal extends Symbol {
         return value;
     }
 
+    /**
+     * 非终结符工厂
+     *
+     * @param s
+     * @return
+     */
     public static NonTerminal nonFactory(String s) {
         return new NonTerminal(s);
     }

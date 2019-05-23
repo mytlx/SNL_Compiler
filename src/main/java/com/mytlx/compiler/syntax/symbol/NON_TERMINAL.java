@@ -289,7 +289,7 @@ public enum NON_TERMINAL {
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
             if (type == INTEGER || type == CHAR || type == ARRAY || type == RECORD || type == ID) {
-                return asList(nonFactory("TypeDef"), nonFactory("VarIdList"),terFactory(SEMI), nonFactory("VarDecMore"));
+                return asList(nonFactory("TypeDef"), nonFactory("VarIdList"), terFactory(SEMI), nonFactory("VarDecMore"));
             }
             return null;
         }
@@ -967,5 +967,11 @@ public enum NON_TERMINAL {
 
     public NonTerminal nonTerminal;
 
+    /**
+     * 用所给的token类型查预测分析表，返回产生式右部
+     *
+     * @param token 要查的token
+     * @return 产生式右部，列表
+     */
     public abstract List<Symbol> predict(Token token);
 }

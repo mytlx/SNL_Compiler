@@ -23,6 +23,12 @@ public class Terminal extends Symbol {
         this.node = new TreeNode(token.getValue());
     }
 
+    /**
+     * 终结符工厂
+     *
+     * @param tokenType
+     * @return
+     */
     public static Terminal terFactory(TokenType tokenType) {
         return new Terminal(new Token(tokenType));
     }

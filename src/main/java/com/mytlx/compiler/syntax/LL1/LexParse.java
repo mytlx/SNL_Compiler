@@ -1,5 +1,6 @@
 package com.mytlx.compiler.syntax.LL1;
 
+import com.mytlx.compiler.lexer.Lexer;
 import com.mytlx.compiler.lexer.LexerResult;
 import com.mytlx.compiler.lexer.Token;
 import com.mytlx.compiler.lexer.TokenType;
@@ -11,9 +12,7 @@ import com.mytlx.compiler.syntax.tree.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -31,10 +30,17 @@ public abstract class LexParse {
 
     public abstract SyntaxTree syntaxParse();
 
-    public void lexParse() {
-        InputStream in = Lexer.class.getClassLoader().getResourceAsStream("p.snl");
+    /**
+     * 语法分析前做的词法分析工作，获得token列表
+     *
+     * @param inPath 源文件
+     */
+    public void lexParse(String inPath) {
+        // InputStream in = Lexer.class.getClassLoader().getResourceAsStream(inPath);
+        InputStream in = null;
         Lexer lexer = new Lexer();
         try {
+            in = new FileInputStream(new File(inPath));
             LexerResult result = lexer.getResult(new InputStreamReader(in));
             tokenList = result.getTokenList();
             LOG.info("=========================词法分析结束============================");
@@ -51,7 +57,7 @@ public abstract class LexParse {
      *
      * @param type 终结符的token type
      * @return 成功：值为token value的树结点
-     *         不成功：null
+     * 不成功：null
      */
     TreeNode match(TokenType type) {
         Token t = popToken();
@@ -90,7 +96,7 @@ public abstract class LexParse {
      * 相同于栈中的pop
      *
      * @return 成功：列表中当前Token
-     *         不成功：null
+     * 不成功：null
      */
     private Token popToken() {
         Token token = null;
@@ -108,7 +114,7 @@ public abstract class LexParse {
      * 相当于栈中的peek
      *
      * @return 成功：指针当前指向的Token
-     *         不成功：null
+     * 不成功：null
      */
     private Token peekToken() {
         Token token = null;

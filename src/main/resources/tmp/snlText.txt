@@ -1,21 +1,11 @@
-{数组测试}
-{应该输出:0,1,2,3,4,5}
-program sd
-type  i=integer;
-      sarray=array [0..5] of integer;
-var  i x;
-     sarray y;
-     integer ss;
-procedure sd(integer a);
+{传说中的注释}
+program p
+type t = integer;
+    var t v1;
+    char v2;
 begin
-   write(a)
-end
-begin
-  ss:=0;
-  while ss<6 do
-    y[ss]:=ss;
-    x:=y[ss];
-    sd(x);
-    ss:=ss+1
-  endwh
+    read(v1);
+    v1 := v1 + 10;
+    {write('a'')}
+    write(v1)
 end.

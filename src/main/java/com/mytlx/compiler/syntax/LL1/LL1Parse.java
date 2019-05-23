@@ -8,9 +8,7 @@ import com.mytlx.compiler.syntax.tree.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.List;
 import java.util.Stack;
 
@@ -81,7 +79,6 @@ public class LL1Parse extends LexParse {
                 LOG.error("未识别的字符，出现了不应该出现的字符：[ " + symbol.getNode().getValue() + " ]");
             }
         }
-
         syntaxTree = new SyntaxTree(root);
         return syntaxTree;
     }
@@ -93,9 +90,9 @@ public class LL1Parse extends LexParse {
      */
     public static void main(String[] args) throws FileNotFoundException {
         LL1Parse parse = new LL1Parse();
-        parse.lexParse();
+        parse.lexParse("./p.snl");
         SyntaxTree result = parse.syntaxParse();
-        result.setOut(new PrintStream(new File("./tree.txt")));
+        // result.setOut(new PrintStream(new File("")));
         result.preOrderRecursive();
     }
 }

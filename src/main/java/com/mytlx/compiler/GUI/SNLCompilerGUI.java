@@ -1,19 +1,29 @@
 package com.mytlx.compiler.GUI;
 
+import com.mytlx.compiler.utils.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.File;
 
-import com.mytlx.compiler.FileUtils.FileUtils;
+import static com.mytlx.compiler.utils.PropertiesUtils.getProperty;
+
 
 /**
+ * GUI结构
+ *
  * @author Kevin Guo
  * @date 2019-05-23
  * @time 11:43
  */
 public class SNLCompilerGUI extends JFrame implements ActionListener {
+
+    private static Logger LOG = LoggerFactory.getLogger(SNLCompilerGUI.class);
+
     /**
      * 组件声明
      */
@@ -91,11 +101,14 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
         outputScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         snlArea.setEditable(true);
         outputArea.setEditable(false);
+        snlArea.setFont(new Font("Courier", Font.PLAIN, 18));
+        outputArea.setFont(new Font("Courier", Font.PLAIN, 14));
+
 
         //snl文本区显示行号
         LineNumberHeaderView lineNumberHeader = new LineNumberHeaderView();
         //设置行号的高度，如果和textarea的行高不匹配，可以修改此值
-        lineNumberHeader.setLineHeight(16);
+        lineNumberHeader.setLineHeight(19);
         snlScrollPane.setRowHeaderView(lineNumberHeader);
 
         setTitle("SNL编译器");//窗口名
@@ -124,24 +137,35 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
             readSNLFile(snlArea);
         }
         if (e.getSource() == tokenButton) {
+            LOG.trace("GUI点击“生成Token序列");
             if (snlArea.getText().length() == 0) {
                 outputArea.setText("请打开一个SNL源文件");
             } else {
                 outputLabel.setText("Token序列");
-                writeSNLFile(snlArea, "./src/main/resources/tmp/snlText.txt");//保存snlArea上文本到文件
-
-                readTokenListFile(outputArea, "./src/main/resources/tmp/tokenList.txt");
+                writeSNLFile(snlArea, getProperty("inPath"));//保存snlArea上文本到文件
+                LOG.info("=======开始词法分析========");
+                LOG.info("源文件：" + getProperty("inPath"));
+                LOG.info("输出文件：" + getProperty("tokenPath"));
+                LOG.info("===========================");
+                ParseForGUI.getToken(getProperty("inPath"), getProperty("tokenPath"));
+                readTokenListFile(outputArea, getProperty("tokenPath"));
 
             }
         }
         if (e.getSource() == syntaxButton) {
-            if (snlArea.getText().length() == 0)    {
+            LOG.trace("GUI点击“生成语法分析树");
+            if (snlArea.getText().length() == 0) {
                 outputArea.setText("请打开一个SNL源文件");
             } else {
                 outputLabel.setText("语法分析树");
-                writeSNLFile(snlArea, "./src/main/resources/tmp/snlText.txt");//保存snlArea上文本到文件
-
-                readSyntaxTreeFile(outputArea, "./src/main/resources/tmp/tree.txt");
+                writeSNLFile(snlArea, getProperty("inPath"));//保存snlArea上文本到文件
+                LOG.info("=======开始语法分析========");
+                LOG.info("源文件：" + getProperty("inPath"));
+                LOG.info("输出文件：" + getProperty("treePath"));
+                LOG.info("===========================");
+                ParseForGUI.getSyntaxTree(getProperty("inPath"),
+                        getProperty("treePath"));
+                readSyntaxTreeFile(outputArea, getProperty("treePath"));
 
             }
         }
@@ -205,7 +229,7 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
     }
 
     /**
-     * 生成界面
+     * 生成界面，单元测试
      *
      * @param args
      */

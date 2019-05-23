@@ -1,4 +1,4 @@
-package com.mytlx.compiler.syntax.symbol;
+package com.mytlx.compiler.utils;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 2019.5.22
  * @time 11:32
  */
-public class Util implements Serializable {
+public class ToStringUtils implements Serializable {
 
     private static final long serialVersionUID = 402154372800404254L;
 

@@ -1,9 +1,11 @@
-package com.mytlx.compiler.FileUtils;
+package com.mytlx.compiler.utils;
 
 import javax.swing.*;
 import java.io.*;
 
 /**
+ * 用于GUI的一些文件操作
+ *
  * @author Kevin Guo
  * @date 2019-05-23
  * @time 17:08

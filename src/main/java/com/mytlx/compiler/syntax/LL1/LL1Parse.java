@@ -8,6 +8,9 @@ import com.mytlx.compiler.syntax.tree.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,10 +93,11 @@ public class LL1Parse extends LexParse {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         LL1Parse parse = new LL1Parse();
         parse.lexParse();
         SyntaxTree result = parse.syntaxParse();
+        result.setOut(new PrintStream(new File("./tree.txt")));
         result.preOrderRecursive();
     }
 }

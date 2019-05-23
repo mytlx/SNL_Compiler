@@ -1,0 +1,107 @@
+Program
+|__ProgramHead
+|  |__program
+|  |__ProgramName
+|     |__p
+|__DeclarePart
+|  |__TypeDecpart
+|  |  |__TypeDec
+|  |     |__type
+|  |     |__TypeDecList
+|  |        |__TypeId
+|  |        |  |__t
+|  |        |__=
+|  |        |__TypeDef
+|  |        |  |__BaseType
+|  |        |     |__integer
+|  |        |__;
+|  |        |__TypeDecMore
+|  |           |__blank
+|  |__VarDecpart
+|  |  |__VarDec
+|  |     |__var
+|  |     |__VarDecList
+|  |        |__TypeDef
+|  |        |  |__t
+|  |        |__VarIdList
+|  |        |  |__v1
+|  |        |  |__VarIdMore
+|  |        |     |__blank
+|  |        |__;
+|  |        |__VarDecMore
+|  |           |__VarDecList
+|  |              |__TypeDef
+|  |              |  |__BaseType
+|  |              |     |__char
+|  |              |__VarIdList
+|  |              |  |__v2
+|  |              |  |__VarIdMore
+|  |              |     |__blank
+|  |              |__;
+|  |              |__VarDecMore
+|  |                 |__blank
+|  |__ProcDecpart
+|     |__blank
+|__ProgramBody
+|  |__begin
+|  |__StmList
+|  |  |__Stm
+|  |  |  |__InputStm
+|  |  |     |__read
+|  |  |     |__(
+|  |  |     |__Invar
+|  |  |     |  |__v1
+|  |  |     |__)
+|  |  |__StmMore
+|  |     |__;
+|  |     |__StmList
+|  |        |__Stm
+|  |        |  |__v1
+|  |        |  |__AssCall
+|  |        |     |__AssignmentRest
+|  |        |        |__VariMore
+|  |        |        |  |__blank
+|  |        |        |__:=
+|  |        |        |__Exp
+|  |        |           |__Term
+|  |        |           |  |__Factor
+|  |        |           |  |  |__Variable
+|  |        |           |  |     |__v1
+|  |        |           |  |     |__VariMore
+|  |        |           |  |        |__blank
+|  |        |           |  |__OtherFactor
+|  |        |           |     |__blank
+|  |        |           |__OtherTerm
+|  |        |              |__AddOp
+|  |        |              |  |__+
+|  |        |              |__Exp
+|  |        |                 |__Term
+|  |        |                 |  |__Factor
+|  |        |                 |  |  |__10
+|  |        |                 |  |__OtherFactor
+|  |        |                 |     |__blank
+|  |        |                 |__OtherTerm
+|  |        |                    |__blank
+|  |        |__StmMore
+|  |           |__;
+|  |           |__StmList
+|  |              |__Stm
+|  |              |  |__OutputStm
+|  |              |     |__write
+|  |              |     |__(
+|  |              |     |__Exp
+|  |              |     |  |__Term
+|  |              |     |  |  |__Factor
+|  |              |     |  |  |  |__Variable
+|  |              |     |  |  |     |__v1
+|  |              |     |  |  |     |__VariMore
+|  |              |     |  |  |        |__blank
+|  |              |     |  |  |__OtherFactor
+|  |              |     |  |     |__blank
+|  |              |     |  |__OtherTerm
+|  |              |     |     |__blank
+|  |              |     |__)
+|  |              |__StmMore
+|  |                 |__blank
+|  |__end
+|__.

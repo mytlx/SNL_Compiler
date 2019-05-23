@@ -1,12 +1,5 @@
 package com.mytlx.compiler.lexer;
 
-/**
- * Created by IntelliJ IDEA.
- * User: TLX
- * Date: 2019/5/15
- * Time: 15:37
- */
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +10,13 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 词法分析（直接转向法）
+ *
+ * @author TLX
+ * @date 2019/5/15
+ * @time 15:37
+ */
 public class Lexer {
 
     /**
@@ -45,22 +44,16 @@ public class Lexer {
     /**
      * 获取词法分析结果
      *
-     * @param reader
-     * @return
-     * @throws IOException
+     * @param reader snl文件的输入字符流
+     * @return 词法分析结果
+     * @throws IOException 字符输入流为空
      */
     public LexerResult getResult(Reader reader) throws IOException {
         LexerResult result = new LexerResult();
-        // TODO: diamond
         List<Token> tokenList = new ArrayList<>();
-        errors = new ArrayList<>();
 
         if (reader == null) {
-            errors.add("input stream must not to be null");
-            for (String error : errors) {
-                LOG.warn(error);
-            }
-            result.setErrors(errors);
+            LOG.error("字符输入流为空");
             result.setTokenList(tokenList);
             return result;
         }
@@ -71,11 +64,7 @@ public class Lexer {
             tokenList.add(token);
             token = getToken();
         }
-        result.setErrors(errors);
         result.setTokenList(tokenList);
-        for (String error : errors) {
-            LOG.warn(error);
-        }
         return result;
     }
 
@@ -88,6 +77,7 @@ public class Lexer {
         LOG.trace("调用getToken方法");
         StateEnum stateEnum = StateEnum.NORMAL;
         StringBuilder sb = new StringBuilder();
+        int dotLine = 0, dotColumn = 0;
         int ch = getChar();
         while (ch != -1) {
             sb.append((char) ch);
@@ -167,7 +157,7 @@ public class Lexer {
                         sb.deleteCharAt(sb.length() - 1);       // 删除符号'\''
                         stateEnum = StateEnum.INCHAR;
                     } else {
-                        LOG.info("当前字符不在分析范围之内：{}({})[{}:{}]", showChar(ch), ch, line, column);
+                        LOG.error("当前字符不在分析范围之内：{}({})[{}:{}]", showChar(ch), ch, line, column);
                         stateEnum = StateEnum.ERROR;
                     }
                     // TODO: 多个注释结束符的情况{ commment }}}}}}}
@@ -185,7 +175,7 @@ public class Lexer {
                         LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
                         backTrackChar(sb.charAt(sb.length() - 1));
                         token = new Token(line, column, TokenType.ID, sb.substring(0, sb.length() - 1));
-                        // TODO: 判断是否为保留字
+                        // 判断是否为保留字
                         token.checkKeyWords();
                         LOG.debug("已识别Token：" + token);
                         return token;
@@ -214,7 +204,7 @@ public class Lexer {
                         LOG.debug("已识别Token：" + token);
                         return token;
                     } else {
-                        LOG.info("':'后面不是'='");
+                        LOG.error("':'后面不是'='");
                         stateEnum = StateEnum.ERROR;
                     }
                     break;
@@ -232,7 +222,7 @@ public class Lexer {
                     stateEnum = StateEnum.NORMAL;
                     if (ch != '}') {
                         // 直到文件结束也没有注释结束符
-                        LOG.info("没有注释结束符");
+                        LOG.error("没有注释结束符");
                         stateEnum = StateEnum.ERROR;
                     }
                     break;
@@ -252,15 +242,18 @@ public class Lexer {
                         stateEnum = StateEnum.INRANGE;
                         break;
                     }
-
+                    // 因为结束符"."后面可能有多个空白字符，需要记录行和列
+                    dotLine = line;
+                    dotColumn = column - 1;
                     while (isBlank(ch)) ch = getChar();
                     if (ch == -1) {             // 结束标志
-                        token = new Token(line, column, TokenType.EOF, ".");
+                        LOG.trace("结束标志");
+                        token = new Token(dotLine, dotColumn, TokenType.EOF, ".");
                         LOG.debug("已识别Token：" + token);
                         return token;
                     }
                     // 错误，回溯
-                    LOG.info("错误的点运算符");
+                    LOG.error("错误的点运算符");
                     LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
                     backTrackChar(ch);
                     stateEnum = StateEnum.ERROR;
@@ -280,7 +273,7 @@ public class Lexer {
                         return token;
                     }
                     // 如果后面不是数字，那么error
-                    LOG.info("数组下标界限符后面不是数字");
+                    LOG.error("数组下标界限符后面不是数字");
                     stateEnum = StateEnum.ERROR;
                     break;
                 //</editor-fold>
@@ -297,14 +290,15 @@ public class Lexer {
                         }
                     }
                     // 其他符号，error
-                    LOG.info("没有字符结束标志");
+                    LOG.error("没有字符结束标志");
                     stateEnum = StateEnum.ERROR;
                     break;
                 //</editor-fold>
                 //<editor-fold desc="case ERROR 错误返回空Token">
                 case ERROR:
-                    errors.add("[Error] Unrecognized token. near " + line + ":" + column);
-                    token = new Token();
+                    LOG.error("[Error] Unrecognized token. near " + line + ":" + column);
+                    // TODO: 词法分析错误处理
+                    token = new Token(line, column, TokenType.ERROR, sb.toString());
                     return token;
                 //</editor-fold>
                 default:
@@ -315,15 +309,16 @@ public class Lexer {
             ch = getChar();
         }
         //region 文件结束处理
+
         // 如果文件结束前一个符号是'.'，则程序结束
         // 如果'.'是文件的最后一个字符，那么将跳到下面
-        if (stateEnum == StateEnum.INDOT) {
-            Token token = new Token(line, column, TokenType.DOT, ".");
-            LOG.debug("已识别Token：" + token);
-            return token;
-        }
+        // if (stateEnum == StateEnum.INDOT) {
+        //     Token token = new Token(line, column, TokenType.DOT, ".");
+        //     LOG.debug("已识别Token：" + token);
+        //     return token;
+        // }
         if (stateEnum != StateEnum.NORMAL) {
-            errors.add("[错误]在 " + line + "行 " + column + "列");
+            LOG.error("[错误]在 " + line + "行 " + column + "列");
         }
         //endregion
         return null;
@@ -336,7 +331,7 @@ public class Lexer {
      */
     private void backTrackChar(int ch) {
         getMeFirst = ch;
-        // TODO:如果要回溯的字符在列首的情况
+        // 如果要回溯的字符在列首的情况，应该不存在此情况
         column--;
     }
 
@@ -352,7 +347,7 @@ public class Lexer {
         if (getMeFirst != -1 && getMeFirst != ' ' && getMeFirst != '\r') {
             ch = getMeFirst;
             getMeFirst = -1;
-        } else if(getMeFirst == ' ' || getMeFirst == '\r') {
+        } else if (getMeFirst == ' ' || getMeFirst == '\r') {
             column++;
             getMeFirst = -1;
             ch = reader.read();
@@ -374,8 +369,8 @@ public class Lexer {
     /**
      * 显示空白字符，用于日志记录
      *
-     * @param ch
-     * @return
+     * @param ch 空白字符
+     * @return 空白字符的符号表示
      */
     private String showChar(int ch) {
         if (ch == '\n')
@@ -388,8 +383,8 @@ public class Lexer {
     /**
      * 判断是否为字母
      *
-     * @param ch
-     * @return
+     * @param ch 要判断的字符
+     * @return true or false
      */
     private boolean isAlpha(int ch) {
         return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
@@ -398,8 +393,8 @@ public class Lexer {
     /**
      * 判断是否为数字
      *
-     * @param ch
-     * @return
+     * @param ch 要判断的字符
+     * @return true or false
      */
     private boolean isDigit(int ch) {
         return (ch >= '0' && ch <= '9');
@@ -408,8 +403,8 @@ public class Lexer {
     /**
      * 判断是否为空白（空格，制表符，回车，换行）
      *
-     * @param ch
-     * @return
+     * @param ch 要判断的字符
+     * @return true or false
      */
     private boolean isBlank(int ch) {
         return ((char) ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
@@ -417,15 +412,12 @@ public class Lexer {
 
     /**
      * 单元测试，词法分析
-     *
-     * @param args
      */
     public static void main(String[] args) {
         InputStream in = Lexer.class.getClassLoader().getResourceAsStream("p.snl");
         Lexer lexer = new Lexer();
         try {
             LexerResult result = lexer.getResult(new InputStreamReader(in));
-            if (result.getErrors().isEmpty()) {
                 List<Token> list = result.getTokenList();
                 System.out.println();
                 if (!list.isEmpty()) {
@@ -435,10 +427,6 @@ public class Lexer {
                 for (Token t : list) {
                     System.out.printf("[%3d:%-3d]| %8s | %8s\n", t.getLine(), t.getColumn(), t.getValue(), t.getType());
                 }
-            } else {
-                System.out.println("词法分析错误");
-                result.getErrors().forEach(System.out::println);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

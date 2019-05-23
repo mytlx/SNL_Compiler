@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class LexerResult {
     private List<Token> tokenList;
-    private List<String> errors;
 
     public List<Token> getTokenList() {
         return tokenList;
@@ -20,11 +19,4 @@ public class LexerResult {
         this.tokenList = tokenList;
     }
 
-    public List<String> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
-    }
 }

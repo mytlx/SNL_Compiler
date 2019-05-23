@@ -18,14 +18,11 @@ public class lexerTest {
         Lexer lexer = new Lexer();
         try {
             LexerResult result = lexer.getResult(new InputStreamReader(in));
-            if (result.getErrors().isEmpty()) {
-                List<Token> list = result.getTokenList();
-                for (Token token : list) {
-                    out.println(token);
-                }
-            } else {
-                System.out.println("词法分析错误");
-                result.getErrors().forEach(System.out::println);
+
+            List<Token> list = result.getTokenList();
+            for (Token token : list) {
+                System.out.println(token);
+                out.println(token);
             }
         } catch (IOException e) {
             e.printStackTrace();

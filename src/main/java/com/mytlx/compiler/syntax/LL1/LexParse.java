@@ -1,6 +1,5 @@
 package com.mytlx.compiler.syntax.LL1;
 
-import com.mytlx.compiler.lexer.Lexer;
 import com.mytlx.compiler.lexer.LexerResult;
 import com.mytlx.compiler.lexer.Token;
 import com.mytlx.compiler.lexer.TokenType;

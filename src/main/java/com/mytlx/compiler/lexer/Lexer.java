@@ -38,6 +38,7 @@ public class Lexer {
     private int line = 1;
     private int column = 0;
     private int getMeFirst = -1;
+    private boolean lf = false;
     private Reader reader;
     private List<String> errors;
 
@@ -254,8 +255,8 @@ public class Lexer {
                     }
                     // 错误，回溯
                     LOG.error("错误的点运算符");
-                    LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
-                    backTrackChar(ch);
+                    // LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
+                    // backTrackChar(ch);
                     stateEnum = StateEnum.ERROR;
                     break;
                 //</editor-fold>
@@ -331,7 +332,8 @@ public class Lexer {
      */
     private void backTrackChar(int ch) {
         getMeFirst = ch;
-        // 如果要回溯的字符在列首的情况，应该不存在此情况
+        // 如果要回溯的字符在列首的情况，CRLF应该不存在此情况
+        // TODO：但是LF会存在此种情况
         column--;
     }
 
@@ -355,11 +357,19 @@ public class Lexer {
             ch = reader.read();
         }
 
-        if (ch == '\n') {
+        if (lf) {
             column = 0;
             line++;
+        }
+
+        if (ch == '\n') {
+            lf = true;
+            column++;
+            // column = 0;
+            // line++;
         } else if (ch != -1) {
             column++;
+            lf = false;
         }
 
         LOG.trace("当前字符是：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);

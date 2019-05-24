@@ -1,32 +1,34 @@
-< (2,7), PROGRAM, program >
-< (2,9), ID, p >
-< (3,4), TYPE, type >
-< (3,6), ID, t >
-< (3,8), EQ, = >
-< (3,16), INTEGER, integer >
-< (3,17), SEMI, ; >
-< (4,7), VAR, var >
-< (4,9), ID, t >
-< (4,12), ID, v1 >
-< (4,13), SEMI, ; >
-< (5,8), CHAR, char >
-< (5,11), ID, v2 >
-< (5,12), SEMI, ; >
-< (6,5), BEGIN, begin >
-< (7,8), READ, read >
-< (7,9), LPAREN, ( >
-< (7,11), ID, v1 >
-< (7,12), RPAREN, ) >
-< (7,13), SEMI, ; >
-< (8,6), ID, v1 >
-< (8,9), ASSIGN, := >
-< (8,12), ID, v1 >
-< (8,14), PLUS, + >
-< (8,17), INTC, 10 >
-< (8,18), SEMI, ; >
-< (10,9), WRITE, write >
-< (10,10), LPAREN, ( >
-< (10,12), ID, v1 >
-< (10,13), RPAREN, ) >
-< (11,3), END, end >
-< (11,4), EOF, . >
+< [ 行: 列 ],  词素信息,  词法单元 >
+-----------------------------------
+< [  2:  7 ],   program,   PROGRAM >
+< [  2:  9 ],         p,        ID >
+< [  4:  4 ],      type,      TYPE >
+< [  4:  6 ],         t,        ID >
+< [  4:  8 ],         =,        EQ >
+< [  4: 16 ],   integer,   INTEGER >
+< [  4: 17 ],         ;,      SEMI >
+< [  5:  7 ],       var,       VAR >
+< [  5:  9 ],         t,        ID >
+< [  5: 12 ],        v1,        ID >
+< [  5: 13 ],         ;,      SEMI >
+< [  6:  8 ],      char,      CHAR >
+< [  6: 11 ],        v2,        ID >
+< [  6: 12 ],         ;,      SEMI >
+< [  7:  5 ],     begin,     BEGIN >
+< [  9:  8 ],      read,      READ >
+< [  9:  9 ],         (,    LPAREN >
+< [  9: 11 ],        v1,        ID >
+< [  9: 12 ],         ),    RPAREN >
+< [  9: 13 ],         ;,      SEMI >
+< [ 10:  6 ],        v1,        ID >
+< [ 10:  9 ],        :=,    ASSIGN >
+< [ 10: 12 ],        v1,        ID >
+< [ 10: 14 ],         +,      PLUS >
+< [ 10: 17 ],        10,      INTC >
+< [ 10: 18 ],         ;,      SEMI >
+< [ 12:  9 ],     write,     WRITE >
+< [ 12: 10 ],         (,    LPAREN >
+< [ 12: 12 ],        v1,        ID >
+< [ 12: 13 ],         ),    RPAREN >
+< [ 13:  3 ],       end,       END >
+< [ 13:  4 ],         .,       EOF >

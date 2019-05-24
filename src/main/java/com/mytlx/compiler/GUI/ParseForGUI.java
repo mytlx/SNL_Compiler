@@ -33,10 +33,19 @@ public class ParseForGUI {
             PrintStream out = new PrintStream(outPath);
             LexerResult result = lexer.getResult(new InputStreamReader(in));
 
-            list = result.getTokenList();
-            for (Token token : list) {
-                System.out.println(token);
-                out.println(token);
+            if (result != null) {
+                list = result.getTokenList();
+                if (!list.isEmpty()) {
+                    System.out.print("< [ 行: 列 ],  词素信息,  词法单元 >\n");
+                    System.out.print("-----------------------------------\n");
+                    out.print("< [ 行: 列 ],  词素信息,  词法单元 >\n");
+                    out.print("-----------------------------------\n");
+                }
+                for (Token t : list) {
+                    // System.out.println(t);
+                    System.out.printf("< [%3d:%3d ],%10s,%10s >\n", t.getLine(), t.getColumn(), t.getValue(), t.getType());
+                    out.printf("< [%3d:%3d ],%10s,%10s >\n", t.getLine(), t.getColumn(), t.getValue(), t.getType());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +55,8 @@ public class ParseForGUI {
     /**
      * GUI用到的语法分析，用来生成语法分析树
      * 流程：词法分析 -> 语法分析
-     * @param inPath 源文件
+     *
+     * @param inPath  源文件
      * @param outPath 语法分析树输出的文件
      */
     public static void getSyntaxTree(String inPath, String outPath) {

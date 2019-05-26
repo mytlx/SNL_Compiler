@@ -49,6 +49,7 @@ public class LL1Parse extends LexParse {
                     LOG.trace("##########终结符识别完毕：<" + symbol.getNode().getValue() + "> ###########");
                 } else {
                     LOG.error("匹配终结符失败");
+                    return null;
                 }
 
             } else if (symbol instanceof NonTerminal) {
@@ -73,10 +74,12 @@ public class LL1Parse extends LexParse {
                     }
                 } else {
                     LOG.error("预测分析表查询失败");
+                    return null;
                 }
             } else {
                 // error
                 LOG.error("未识别的字符，出现了不应该出现的字符：[ " + symbol.getNode().getValue() + " ]");
+                return null;
             }
         }
         syntaxTree = new SyntaxTree(root);
@@ -93,6 +96,7 @@ public class LL1Parse extends LexParse {
         parse.lexParse("./p.snl");
         SyntaxTree result = parse.syntaxParse();
         // result.setOut(new PrintStream(new File("")));
-        result.preOrderRecursive();
+        if (result != null)
+            result.preOrderRecursive();
     }
 }

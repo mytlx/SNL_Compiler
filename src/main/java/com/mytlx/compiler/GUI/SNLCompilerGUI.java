@@ -219,8 +219,8 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
      * @return 在选择文件对话框选择的文件
      */
     private File selectFile() {
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.showDialog(new JLabel(), "打开SNL源文件");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         File selectedFile = fileChooser.getSelectedFile();
         fileChooser.setCurrentDirectory(selectedFile);
         return selectedFile;
@@ -258,6 +258,7 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
      * @param fileName
      */
     private void readTokenListFile(JTextArea textArea, String fileName) {
+        textArea.setForeground(Color.black);
         fileUtils.readFileByLine(textArea, new File(fileName));
     }
 
@@ -268,7 +269,12 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
      * @param fileName
      */
     private void readSyntaxTreeFile(JTextArea textArea, String fileName) {
+        textArea.setForeground(Color.black);
         fileUtils.readFileByLine(textArea, new File(fileName));
+        if(textArea.getText().equals("")){
+            textArea.setForeground(Color.red);
+            textArea.setText("语法分析出错，请查看错误信息...");
+        }
     }
 
     /**
@@ -283,7 +289,7 @@ public class SNLCompilerGUI extends JFrame implements ActionListener {
 
     /**
      * 读错误文件到ErrorArea中
-     *
+     *extArea
      * @param textArea
      * @param fileName
      */

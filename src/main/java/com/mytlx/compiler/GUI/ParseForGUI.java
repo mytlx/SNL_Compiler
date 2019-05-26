@@ -40,8 +40,8 @@ public class ParseForGUI {
                 if (!list.isEmpty()) {
                     System.out.print("< [ 行: 列 ],  词素信息,  词法单元 >\n");
                     System.out.print("-----------------------------------\n");
-                    out.print("< [ 行: 列 ],  词素信息,  词法单元 >\n");
-                    out.print("-----------------------------------\n");
+                    out.print("< [ 行: 列 ],   词素信息,   词法单元 >\n");
+                    out.print("------------------------------------\n");
                 }
                 for (Token t : list) {
                     // System.out.println(t);

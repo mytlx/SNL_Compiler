@@ -9,6 +9,8 @@ import com.mytlx.compiler.syntax.tree.SyntaxTree;
 import java.io.*;
 import java.util.List;
 
+import static com.mytlx.compiler.utils.FileUtils.clearFile;
+
 /**
  * GUI中使用到的词法分析和语法分析
  *
@@ -64,8 +66,11 @@ public class ParseForGUI {
         parse.lexParse(inPath);
         SyntaxTree result = parse.syntaxParse();
         try {
-            result.setOut(new PrintStream(new File(outPath)));
-            result.preOrderRecursive();
+            clearFile(new File(outPath));
+            if (result != null) {
+                result.setOut(new PrintStream(new File(outPath)));
+                result.preOrderRecursive();
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

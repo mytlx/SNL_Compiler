@@ -171,8 +171,8 @@ public enum NON_TERMINAL {
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
             if (type == ARRAY) {
-                return asList(terFactory(ARRAY), terFactory(LMIDPAREN), nonFactory("low"), terFactory(UNDERRANGE),
-                        nonFactory("top"), terFactory(OF), nonFactory("BaseType"));
+                return asList(terFactory(ARRAY), terFactory(LMIDPAREN), nonFactory("Low"), terFactory(UNDERRANGE),
+                        nonFactory("Top"),terFactory(RMIDPAREN) ,terFactory(OF), nonFactory("BaseType"));
             }
             return null;
         }
@@ -366,7 +366,7 @@ public enum NON_TERMINAL {
             if (type == BEGIN) {
                 return singletonList(nonFactory("blank"));
             } else if (type == PROCEDURE) {
-                return singletonList(nonFactory("ProcDeclaration"));
+                return singletonList(nonFactory("ProcDec"));  // correction: 应该是ProcDec而不是ProcDeclaration
             }
             return null;
         }
@@ -420,7 +420,7 @@ public enum NON_TERMINAL {
         @Override
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
-            if (type == LPAREN) {
+            if (type == RPAREN) {       // correction: 书上为左括号，有错误
                 return singletonList(nonFactory("blank"));
             } else if (type == SEMI) {
                 return asList(terFactory(SEMI), nonFactory("ParamDecList"));
@@ -571,6 +571,8 @@ public enum NON_TERMINAL {
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
             switch (type) {
+                case LMIDPAREN:     // correction: 应该有个左方括号的情况
+                case DOT:           // correction: 应该有个点号的情况
                 case ASSIGN:
                     return singletonList(nonFactory("AssignmentRest"));
                 case LPAREN:
@@ -601,7 +603,7 @@ public enum NON_TERMINAL {
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
             if (type == IF) {
-                return asList(terFactory(IF), nonFactory("RelExp"), terFactory(THEN), nonFactory("SemList"),
+                return asList(terFactory(IF), nonFactory("RelExp"), terFactory(THEN), nonFactory("StmList"),
                         terFactory(ELSE), nonFactory("StmList"), terFactory(FI));
             }
             return null;
@@ -731,7 +733,7 @@ public enum NON_TERMINAL {
         @Override
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
-            if (type == COMMA || type == LT) {
+            if (type == EQ || type == LT) {
                 return asList(nonFactory("CmpOp"), nonFactory("Exp"));
             }
             return null;
@@ -855,6 +857,7 @@ public enum NON_TERMINAL {
         public List<Symbol> predict(Token token) {
             TokenType type = token.getType();
             switch (type) {
+                case RMIDPAREN:     // correction: 应添加右方括号
                 case ASSIGN:
                 case TIMES:
                 case DIVIDE:

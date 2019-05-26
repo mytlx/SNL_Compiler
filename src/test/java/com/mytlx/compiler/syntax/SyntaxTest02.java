@@ -1,4 +1,4 @@
-package com.mytlx.compiler.lexer;
+package com.mytlx.compiler.syntax;
 
 import com.mytlx.compiler.syntax.LL1.LexParse;
 import org.junit.Test;

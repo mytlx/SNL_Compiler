@@ -1,5 +1,9 @@
-package com.mytlx.compiler.lexer;
+package com.mytlx.compiler.syntax;
 
+import com.mytlx.compiler.lexer.Lexer;
+import com.mytlx.compiler.lexer.LexerResult;
+import com.mytlx.compiler.lexer.Token;
+import com.mytlx.compiler.lexer.TokenType;
 import com.mytlx.compiler.syntax.symbol.NON_TERMINAL;
 import com.mytlx.compiler.syntax.symbol.NonTerminal;
 import com.mytlx.compiler.syntax.symbol.Symbol;

@@ -7,7 +7,7 @@ type w1=record
         integer x;
         integer y;
         end;
-var
+var  
      integer a;
      integer b;
      w1 c;

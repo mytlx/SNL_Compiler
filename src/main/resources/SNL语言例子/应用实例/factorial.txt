@@ -1,10 +1,9 @@
-{给出一个错误的程序，测试是否能够检查出来，
- 并给出错误 提示信息}
-
-program _error
+{閫掑綊璋冪敤娴嬭瘯}
+{鍔熻兘锛氬浜庤緭鍏,杈撳嚭n鐨勯樁涔榼
+program sd
 var integer s;
     integer t;
-procedure factor(intaeger n;var integer m);
+procedure factor(integer n;var integer m);
 var integer w;
 begin
 if n=0

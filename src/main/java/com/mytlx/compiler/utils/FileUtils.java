@@ -12,12 +12,12 @@ import java.io.*;
  */
 public class FileUtils {
     /**
-     * 读"./src/main/resources/"目录下的文件到JTextArea上
+     * 以字符为单位读文件全部内容到JTextArea上
      *
      * @param file
      * @param textArea
      */
-    public void readFile(JTextArea textArea, File file) {
+    public void readFileByChar(JTextArea textArea, File file) {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(file);
@@ -25,11 +25,12 @@ public class FileUtils {
             e.printStackTrace();
             System.out.println("文件不存在...");
         }
-        int c;
+
         try {
             textArea.setText("");
-            while ((c = fileReader.read()) != -1) {
-                textArea.setText(textArea.getText() + (char) c);
+            int ch;
+            while ((ch = fileReader.read()) != -1) {
+                textArea.append(String.valueOf((char) ch));
             }
             fileReader.close();
         } catch (IOException e) {
@@ -39,7 +40,29 @@ public class FileUtils {
     }
 
     /**
-     * 写JTextArea中文本到"./src/main/resources/"目录下的文件中
+     * 以行为单位读文件全部内容到JTextArea上
+     *
+     * @param textArea
+     * @param file
+     */
+    public void readFileByLine(JTextArea textArea, File file) {
+        try (FileReader fileReader = new FileReader(file);
+             BufferedReader br = new BufferedReader(fileReader)
+        ) {
+            textArea.setText("");
+            String line;
+            while ((line = br.readLine()) != null) {
+                textArea.append(line+"\n");
+                textArea.paintImmediately(textArea.getBounds());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            textArea.setText("文件读取失败...");
+        }
+    }
+
+    /**
+     * 写JTextArea中文本到文件中
      *
      * @param textArea
      * @param file
@@ -62,6 +85,25 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("文件写入失败...");
+        }
+    }
+
+    /**
+     * 清空文件内容
+     *
+     * @param file
+     */
+    public static void clearFile(File file) {
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write("");
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

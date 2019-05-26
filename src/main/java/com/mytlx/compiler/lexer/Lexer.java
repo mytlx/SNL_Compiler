@@ -213,6 +213,9 @@ public class Lexer {
                 //<editor-fold desc="case INCOMMENT 去除注释">
                 case INCOMMENT:
                     LOG.trace("进入COMMENT状态");
+                    // 没有注释结束符的情况下，报错
+                    int tmpLine = line;
+                    int tmpColumn = column - 1;
                     // 注释不需要出现在Token中，所以循环删除注释
                     // 删除刚刚读入的注释的第一个字符
                     sb.deleteCharAt(sb.length() - 1);
@@ -223,7 +226,7 @@ public class Lexer {
                     stateEnum = StateEnum.NORMAL;
                     if (ch != '}') {
                         // 直到文件结束也没有注释结束符
-                        LOG.error("没有注释结束符");
+                        LOG.error("没有注释结束符，注释开始符在：[{}:{}]", tmpLine, tmpColumn);
                         stateEnum = StateEnum.ERROR;
                     }
                     break;
@@ -255,9 +258,10 @@ public class Lexer {
                     }
                     // 错误，回溯
                     LOG.error("错误的点运算符");
-                    // LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
-                    // backTrackChar(ch);
-                    stateEnum = StateEnum.ERROR;
+                    LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
+                    backTrackChar(ch);
+                    token = new Token(line, column, TokenType.ERROR, sb.toString());
+                    LOG.debug("已识别Token：" + token);
                     break;
                 //</editor-fold>
                 //<editor-fold desc="case INRANGE 数组下标界限符">
@@ -299,6 +303,9 @@ public class Lexer {
                 case ERROR:
                     LOG.error("[Error] Unrecognized token. near " + line + ":" + column);
                     // TODO: 词法分析错误处理
+                    LOG.trace("回溯字符：\"{}\"({})[{}:{}]", showChar(ch), ch, line, column);
+                    backTrackChar(ch);
+                    sb.deleteCharAt(sb.length() - 1);
                     token = new Token(line, column, TokenType.ERROR, sb.toString());
                     return token;
                 //</editor-fold>
@@ -346,7 +353,7 @@ public class Lexer {
     private int getChar() throws IOException {
         int ch;
         // 先判断getMeFirst中是否存储了回溯的字符
-        if (getMeFirst != -1 && getMeFirst != ' ' && getMeFirst != '\r') {
+        if (getMeFirst != -1 && getMeFirst != ' ' && getMeFirst != '\r' && getMeFirst != '\n') {
             ch = getMeFirst;
             getMeFirst = -1;
         } else if (getMeFirst == ' ' || getMeFirst == '\r') {
@@ -428,15 +435,15 @@ public class Lexer {
         Lexer lexer = new Lexer();
         try {
             LexerResult result = lexer.getResult(new InputStreamReader(in));
-                List<Token> list = result.getTokenList();
-                System.out.println();
-                if (!list.isEmpty()) {
-                    System.out.print("[ 行:列 ]| 词素信息 | 词法单元 \n");
-                    System.out.print("---------+----------+----------\n");
-                }
-                for (Token t : list) {
-                    System.out.printf("[%3d:%-3d]| %8s | %8s\n", t.getLine(), t.getColumn(), t.getValue(), t.getType());
-                }
+            List<Token> list = result.getTokenList();
+            System.out.println();
+            if (!list.isEmpty()) {
+                System.out.print("[ 行:列 ]| 词素信息 | 词法单元 \n");
+                System.out.print("---------+----------+----------\n");
+            }
+            for (Token t : list) {
+                System.out.printf("[%3d:%-3d]| %8s | %8s\n", t.getLine(), t.getColumn(), t.getValue(), t.getType());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

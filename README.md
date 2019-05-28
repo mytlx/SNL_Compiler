@@ -2,7 +2,7 @@
 > JLU &nbsp; 2016级 &nbsp; 计算机科学与技术学院 &nbsp; 编译原理课程设计  
 > SNL语言的词法分析，语法分析  
 > 参考：https://github.com/YouthLin/SNL-Compiler  
-  
+
 ### 主要功能
 1. 词法分析：直接转向法
 2. 语法分析：自顶向下的非递归语法分析（预测分析表）
@@ -15,6 +15,21 @@
 4. 点击“生成语法分析树”按钮，右上部会输出相应的语法分析树
 5. 点击上述两按钮的同时，右下部会输出日志信息和错误信息
   
+### 运行截图
+1. 初始界面
+  ![GUI.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/GUI.png)
+2. 打开文件
+  ![open_file.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/open_file.png)
+3. 成功例子
+  ![success_example1.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/success_example1.png)
+  ![success_example2.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/success_example2.png)
+4. 错误例子
+  ![error_example1.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/error_example1.png)
+  ![error_example2.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/error_example2.png)
+  
+
+
+
 ### 文件结构
 * log/  
     * error.log  
@@ -59,7 +74,7 @@
             * logback.xml：日志的配置文件  
             * path.properties：配置文件，存储文件路径  
             * p.snl：测试用例 
-            
+                        
 ### bug
 * windows下，GUI中的汉字可能会乱码
 * 词法分析中出现`{}}}`时，第一个`}`被识别，其他的会当作错误符号 

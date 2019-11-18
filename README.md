@@ -17,16 +17,15 @@
   
 ### 运行截图
 1. 初始界面
-  ![GUI.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/GUI.png)
+  ![GUI.png](https://raw.githubusercontent.com/mytlx/Image-Hosting/master/SNL_Compiler/GUI.png)
 2. 打开文件
-  ![open_file.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/open_file.png)
+  ![open_file.png](https://raw.githubusercontent.com/mytlx/Image-Hosting/master/SNL_Compiler/open_file.png)
 3. 成功例子
-  ![success_example1.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/success_example1.png)
-  ![success_example2.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/success_example2.png)
+  ![success_example1.png](https://raw.githubusercontent.com/mytlx/Image-Hosting/master/SNL_Compiler/success_example1.png)
+  ![success_example2.png](https://raw.githubusercontent.com/mytlx/Image-Hosting/master/SNL_Compiler/success_example2.png)
 4. 错误例子
-  ![error_example1.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/error_example1.png)
-  ![error_example2.png](https://raw.githubusercontent.com/mytlx/note/master/img/SNL_Compiler/error_example2.png)
-  
+  ![error_example1.png](https://raw.githubusercontent.com/mytlx/Image-Hosting/master/SNL_Compiler/error_example1.png)
+  ![error_example2.png](https://raw.githubusercontent.com/mytlx/Image-Hosting/master/SNL_Compiler/error_example2.png)
 
 
 
